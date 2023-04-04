@@ -9,15 +9,29 @@ export default createStore({
             {
             name:'吃饭',
             isFinish:true
-            }
+            },
+            {
+            name:'敲代码',
+            isFinish:true
+            },
         ]
     },
     // 定义方法 只有mutaion才能修改state  //同步修改
     mutations:{
         // state,第二个参数是传入的值
         deleteThings(state,value){
-            alert(1)
-            state.splice(value,1)
+            state.list.splice(value,1)
+        },
+        addThings(state,value) {
+            state.list.push({
+                name:value,
+                isFinish:false
+            })
+        },
+        deleteAll(state) {
+            state.list = state.list.filter(item =>{
+                return !item.isFinish
+            })
         }
 
     },

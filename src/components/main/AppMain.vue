@@ -1,33 +1,49 @@
 <template>
     <div>
-        <div v-for="(item,index) in list" :key="index"><input type="checkbox" v-model="item.isFinsh"/>{{item.name}} <button @click="index">删除</button></div>
+        <div v-if="data.length">
+            <div class="items" v-for="(item,index) in data" :key="index"><input type="checkbox" @click="change(this)" v-model="item.isFinish"/>{{item.name}} <button class="deleteBtn" @click="deleteThings(index)">删除</button></div>
+        </div>
+        <div v-else>
+            当前无任务
+        </div>
     </div>
 </template>
 <script>
-import {defineComponent,ref , computed} from 'vue'
+import {defineComponent} from 'vue'
 import {useStore} from 'vuex'
-// import {useRouter} from 'vue-router'
 export default defineComponent({
+    props:{
+        data:{
+            type:Array,
+            required:true
+        }
+    },
     name:'AppMain',
     setup(){
-        const store = useStore()
-        const list = computed(()=>{
-            return store.state.list
-        })
-        console.log(1,list)
-        let thingsArr = ref()
-        let deleteThings = (index) =>{
-            store.commit('deleteThings',index)
+        let store = useStore()
+        let deleteThings = (val) =>{
+            store.commit('deleteThings',val)
+        }
+        let change = (val) =>{
+            console.log(val.checked);
         }
         return {
-            thingsArr,
-            deleteThings,
-            list
+        deleteThings,
+        change
         }
     }
 })
 </script>
 <style scoped>
-
+.items{
+    width:200px;
+    height:30px;
+}
+.items:hover{
+background-color:grey;
+}
+.deleteBtn{
+    float:right;
+}
 
 </style>
